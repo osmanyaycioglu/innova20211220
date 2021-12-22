@@ -1,9 +1,12 @@
 package com.training.spring.order.rest;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,17 +19,19 @@ import com.training.spring.order.rest.models.OrderRestObj;
 
 @RestController
 @RequestMapping("/api/v1/order/management")
+@Validated
 public class OrderManagement {
 
     @PostMapping("/place")
-    public String placeOrder(@RequestBody final OrderRestObj objParam) {
+    public String placeOrder(@Validated @RequestBody final OrderRestObj objParam) {
         return "OK " + objParam;
     }
 
     @GetMapping("/cancel")
-    public String cancelOrder(@RequestParam("id") final Long orderId) {
+    public String cancelOrder(@NotNull @Positive @RequestParam("id") final Long orderId) {
         return "Order Canceled";
     }
+
 
     // Yapma
     @PostMapping("/place/{command}")

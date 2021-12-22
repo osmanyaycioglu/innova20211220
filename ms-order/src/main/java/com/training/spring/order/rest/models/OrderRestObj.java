@@ -2,12 +2,31 @@ package com.training.spring.order.rest.models;
 
 import java.util.List;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
+
+
 public class OrderRestObj {
 
+    @NotEmpty
+    @Size(min = 2, max = 20, message = "name 2 ile 20 arasında olmalı")
+    //@StartWith("n:")
     private String       name;
+    @NotEmpty
+    @Size(min = 3, max = 30, message = "surname {min} ile {max} arasında olmalı")
+    //@StartWith("s:")
     private String       surname;
+    @NotEmpty
+    @Pattern(regexp = "^(\\+\\d{1,2}\\s)?\\(?\\d{3}\\)?[\\s.-]\\d{3}[\\s.-]\\d{4}$")
     private String       number;
+    @Size(min = 1, message = "en az {min} tane yemek olmalı")
     private List<String> meals;
+    @Max(360)
+    @Min(20)
+    private Integer      deliveryPeriod;
 
     public String getName() {
         return this.name;
