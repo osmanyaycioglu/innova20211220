@@ -2,8 +2,8 @@ package com.training.spring;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Import;
-import org.springframework.retry.annotation.EnableRetry;
 
 import com.training.error.ErrorHandlingConfig;
 
@@ -12,7 +12,8 @@ import com.training.error.ErrorHandlingConfig;
 //                                            "com.training.error"
 //})
 @SpringBootApplication
-@EnableRetry
+//@EnableRetry
+@EnableFeignClients
 @Import(ErrorHandlingConfig.class)
 public class MsOrderApplication {
 

@@ -8,6 +8,13 @@ server:
     include-binding-errors: always
     include-message: always
   port: ${app.port:10000}
+  tomcat:
+    threads:
+      max: 200
+      min-spare: 20
+    max-connections: 500
+    max-keep-alive-requests: 300
+    keep-alive-timeout: 120000
 spring:
   application:
     name: order
@@ -15,7 +22,7 @@ spring:
     loadbalancer:
       retry:
         avoid-previous-instance: true
-        enabled: true
+        enabled: false
         max-retries-on-next-service-instance: 2
         max-retries-on-same-service-instance: 0
         retry-on-all-operations: true
@@ -28,4 +35,8 @@ resilience4j:
     instances:
       restaurant-menu:
         max-attempts: 2
-        wait-duration: 10ms          
+        wait-duration: 10ms
+        retry-exception-predicate: com.training.spring.order.retry.RestaurantMenuRetryExceptionHandler
+        result-predicate: com.training.spring.order.retry.RestaurantMenuResultHandler
+
+        

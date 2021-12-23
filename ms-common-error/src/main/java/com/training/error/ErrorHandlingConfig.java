@@ -11,5 +11,9 @@ public class ErrorHandlingConfig {
         return new MyRestErrorHandler();
     }
 
+    @Bean
+    public HttpErrorHandle httpErrorHandle() {
+        return new HttpErrorHandle();
+    }
 
 }

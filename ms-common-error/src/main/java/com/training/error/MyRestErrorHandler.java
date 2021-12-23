@@ -25,6 +25,15 @@ public class MyRestErrorHandler {
     private String microservice;
 
 
+    @ExceptionHandler(HttpFeignException.class)
+    @ResponseStatus(HttpStatus.BAD_GATEWAY)
+    public ErrorObj handleException(final HttpFeignException exp) {
+        return this.createBaseErrorObj()
+                   .setMessage("Error while calling anothor MS")
+                   .setErrorCode(13350)
+                   .addError(exp.getErrorObj());
+    }
+
     @ExceptionHandler(IllegalArgumentException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorObj handleException(final IllegalArgumentException exp) {
