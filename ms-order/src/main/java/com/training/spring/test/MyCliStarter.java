@@ -1,4 +1,4 @@
-package com.training.spring.order.integration;
+package com.training.spring.test;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -11,13 +11,19 @@ import io.github.resilience4j.retry.RetryRegistry;
 public class MyCliStarter implements CommandLineRunner {
 
     @Autowired
-    private MyRetryTest   mrt;
+    private MyTest   mrt;
 
     @Autowired
     private RetryRegistry rr;
 
     @Override
     public void run(final String... argsParam) throws Exception {
+        for (int iLoc = 0; iLoc < 30; iLoc++) {
+            this.mrt.test2();
+        }
+    }
+
+    public void run2(final String... argsParam) throws Exception {
         io.github.resilience4j.retry.Retry retryLoc = this.rr.retry("restaurant-menu");
         Metrics metricsLoc = retryLoc.getMetrics();
         for (int iLoc = 0; iLoc < 30; iLoc++) {
