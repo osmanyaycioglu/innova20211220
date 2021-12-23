@@ -4,6 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -15,16 +16,21 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.training.spring.order.mappings.OrderMappings;
 import com.training.spring.order.rest.models.OrderRestObj;
+import com.training.spring.order.services.OrderManagementService;
 
 @RestController
 @RequestMapping("/api/v1/order/management")
 @Validated
-public class OrderManagement {
+public class OrderManagementController {
+
+    @Autowired
+    private OrderManagementService oms;
 
     @PostMapping("/place")
     public String placeOrder(@Validated @RequestBody final OrderRestObj objParam) {
-        return "OK " + objParam;
+        return this.oms.placeOrder(OrderMappings.toOrder(objParam));
     }
 
     @GetMapping("/cancel")

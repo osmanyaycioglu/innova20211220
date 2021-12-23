@@ -1,0 +1,31 @@
+app:
+  boundedcontext: b1
+  domain: d1
+  microservice: ${spring.application.name}
+  subdomain: sb1
+server:
+  error:
+    include-binding-errors: always
+    include-message: always
+  port: ${app.port:10000}
+spring:
+  application:
+    name: order
+  cloud:
+    loadbalancer:
+      retry:
+        avoid-previous-instance: true
+        enabled: true
+        max-retries-on-next-service-instance: 2
+        max-retries-on-same-service-instance: 0
+        retry-on-all-operations: true
+  config:
+    import: configserver:http://127.0.0.1:8888
+resilience4j:
+  retry:
+    metrics:
+      enabled: true
+    instances:
+      restaurant-menu:
+        max-attempts: 2
+        wait-duration: 10ms          

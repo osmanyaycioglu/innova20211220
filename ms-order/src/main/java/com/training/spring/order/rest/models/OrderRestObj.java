@@ -73,5 +73,13 @@ public class OrderRestObj {
                + "]";
     }
 
+    public Integer getDeliveryPeriod() {
+        return deliveryPeriod;
+    }
+
+    public void setDeliveryPeriod(Integer deliveryPeriodParam) {
+        deliveryPeriod = deliveryPeriodParam;
+    }
+
 
 }
