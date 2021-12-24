@@ -1,0 +1,19 @@
+server:
+  port: ${app.port:8080}
+  tomcat:
+    threads:
+      max: 200
+      min-spare: 20
+    max-connections: 500
+    max-keep-alive-requests: 300
+    keep-alive-timeout: 120000
+spring:
+  application:
+    name: restaurant-apigateway
+  config:
+    import: configserver:http://127.0.0.1:8888
+  cloud:    gateway:      discovery:        locator:          enabled: true
+      routes:      - id: restaurant-ms-route
+        predicates:        - Path=/api/v1/restaurant/**
+        uri: lb://RESTAURANT
+    discovery:      enabled: true

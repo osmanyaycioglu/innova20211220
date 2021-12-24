@@ -56,7 +56,7 @@ public class RestaurantMenuIntegration {
     }
 
     public String calculate3(final Order orderParam) {
-        Application applicationLoc = this.ec.getApplication("RESTAURANT");
+        Application applicationLoc = this.ec.getApplication("RESTAURANT-APIGATEWAY");
         List<InstanceInfo> instancesLoc = applicationLoc.getInstances();
         for (InstanceInfo instanceInfoLoc : instancesLoc) {
             System.out.println(instanceInfoLoc);
@@ -92,7 +92,7 @@ public class RestaurantMenuIntegration {
         Menu menu = new Menu();
         menu.setPhoneNumber(orderParam.getNumber());
         menu.setMeals(orderParam.getMeals());
-        MenuResponse responseLoc = this.rt.postForObject("http://RESTAURANT/api/v1/restaurant/menu/calculate",
+        MenuResponse responseLoc = this.rt.postForObject("http://RESTAURANT-APIGATEWAY/api/v1/restaurant/menu/calculate",
                                                          menu,
                                                          MenuResponse.class);
         return responseLoc.getMessage() + " fiyat : " + responseLoc.getAmount();
