@@ -24,9 +24,20 @@ public class MyTest {
     @Retry(name = "restaurant-menu")
     @CircuitBreaker(name = "restaurant-menu-cb")
     public String test2() {
+        try {
+            Thread.sleep(400);
+        } catch (Exception eLoc) {
+        }
         this.counter++;
-        if ((this.counter % 3) == 0) {
-            throw new ResourceAccessException("test");
+        if (this.counter > 30) {
+            if ((this.counter % 5) == 0) {
+                throw new ResourceAccessException("test");
+            }
+
+        } else {
+            if ((this.counter % 3) == 0) {
+                throw new ResourceAccessException("test");
+            }
         }
         return "OK";
     }

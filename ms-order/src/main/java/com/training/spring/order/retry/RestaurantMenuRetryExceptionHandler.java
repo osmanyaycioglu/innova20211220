@@ -11,6 +11,8 @@ import org.springframework.web.client.ResourceAccessException;
 import com.training.error.ErrorObj;
 import com.training.error.HttpFeignException;
 
+import io.github.resilience4j.circuitbreaker.CallNotPermittedException;
+
 public class RestaurantMenuRetryExceptionHandler implements Predicate<Throwable> {
 
     private static final Logger logger = LoggerFactory.getLogger(RestaurantMenuRetryExceptionHandler.class);
@@ -36,6 +38,9 @@ public class RestaurantMenuRetryExceptionHandler implements Predicate<Throwable>
         if (IOException.class.isAssignableFrom(tParam.getClass())) {
             System.out.println("Retry with IOException");
             return true;
+        }
+        if (tParam instanceof CallNotPermittedException) {
+            return false;
         }
         if (tParam instanceof ConnectException) {
             System.out.println("Retry with ConnectException");

@@ -1,9 +1,15 @@
 package com.training.spring.order.integration;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import com.netflix.appinfo.InstanceInfo;
+import com.netflix.discovery.EurekaClient;
+import com.netflix.discovery.shared.Application;
 import com.training.error.HttpFeignException;
 import com.training.spring.order.integration.feign.IRestaurantMenuClient;
 import com.training.spring.order.integration.models.Menu;
@@ -25,6 +31,11 @@ public class RestaurantMenuIntegration {
     @Autowired
     private IRestaurantMenuClient rmc;
 
+    @Autowired
+    private EurekaClient          ec;
+
+    private RestTemplateBuilder   restTemplateBuilder;
+
     public RestaurantMenuIntegration(final RetryRegistry rrParam) {
         super();
         this.rr = rrParam;
@@ -40,6 +51,28 @@ public class RestaurantMenuIntegration {
         menu.setPhoneNumber(orderParam.getNumber());
         menu.setMeals(orderParam.getMeals());
         MenuResponse responseLoc = this.rmc.calculateMenu(menu);
+        return responseLoc.getMessage() + " fiyat : " + responseLoc.getAmount();
+
+    }
+
+    public String calculate3(final Order orderParam) {
+        Application applicationLoc = this.ec.getApplication("RESTAURANT");
+        List<InstanceInfo> instancesLoc = applicationLoc.getInstances();
+        for (InstanceInfo instanceInfoLoc : instancesLoc) {
+            System.out.println(instanceInfoLoc);
+        }
+        Menu menu = new Menu();
+        menu.setPhoneNumber(orderParam.getNumber());
+        menu.setMeals(orderParam.getMeals());
+        InstanceInfo instanceInfoLoc = instancesLoc.get(0);
+        RestTemplate restTemplateLoc = this.restTemplateBuilder.build();
+        MenuResponse responseLoc = restTemplateLoc.postForObject("http://"
+                                                                 + instanceInfoLoc.getIPAddr()
+                                                                 + ":"
+                                                                 + instanceInfoLoc.getPort()
+                                                                 + "/api/v1/restaurant/menu/calculate",
+                                                                 menu,
+                                                                 MenuResponse.class);
         return responseLoc.getMessage() + " fiyat : " + responseLoc.getAmount();
 
     }
