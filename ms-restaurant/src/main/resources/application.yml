@@ -1,0 +1,19 @@
+app:
+  boundedcontext: b2
+  domain: d1
+  microservice: ${spring.application.name}
+  subdomain: sb1
+server:
+  port: ${app.port:11000}
+  tomcat:
+    threads:
+      max: 200
+      min-spare: 20
+    max-connections: 500
+    max-keep-alive-requests: 300
+    keep-alive-timeout: 120000
+spring:
+  application:
+    name: restaurant
+  config:
+    import: configserver:http://127.0.0.1:8888
