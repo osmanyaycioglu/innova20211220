@@ -2,12 +2,10 @@ package com.training.spring.models;
 
 import java.util.List;
 
-import javax.validation.constraints.Size;
-
 public class Menu {
 
     private List<String> meals;
-    @Size(min = 10, max = 11)
+    //@Size(min = 10, max = 11)
     private String       phoneNumber;
 
     public List<String> getMeals() {
