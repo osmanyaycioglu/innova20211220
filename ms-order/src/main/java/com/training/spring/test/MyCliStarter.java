@@ -2,14 +2,13 @@ package com.training.spring.test;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.stereotype.Component;
 
 import io.github.resilience4j.circuitbreaker.CircuitBreaker;
 import io.github.resilience4j.circuitbreaker.CircuitBreakerRegistry;
 import io.github.resilience4j.retry.Retry.Metrics;
 import io.github.resilience4j.retry.RetryRegistry;
 
-@Component
+// @Component
 public class MyCliStarter implements CommandLineRunner {
 
     @Autowired
